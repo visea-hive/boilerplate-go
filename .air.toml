@@ -1,0 +1,22 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  # Build command - compiles your server
+  cmd = "go build -o ./tmp/main.exe ./cmd/server/"
+  # Binary to run after build
+  entrypoint = "tmp/main.exe"
+  # Watch these file extensions
+  include_ext = ["go", "toml", "env"]
+  # Exclude these directories from watching
+  exclude_dir = ["tmp", "vendor", "node_modules", ".git"]
+  # Delay before rebuilding after a change (ms)
+  delay = 1000
+
+[log]
+  # Show log time
+  time = false
+
+[misc]
+  # Delete tmp directory on exit
+  clean_on_exit = true
