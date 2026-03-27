@@ -1,10 +1,16 @@
 package helpers
 
 import (
+	"regexp"
 	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+)
+
+var (
+	nonAlphanumericRegex = regexp.MustCompile(`[^a-z0-9\s-]`)
+	multiSpaceRegex      = regexp.MustCompile(`[\s-]+`)
 )
 
 // ContainsString checks if a string is present in a slice of strings.
@@ -17,14 +23,28 @@ func ContainsString(slice []string, val string) bool {
 	return false
 }
 
-// ParseIDParam is a local helper mapping param
+// ParseIDParam parses a numeric URL parameter as uint.
 func ParseIDParam(c *gin.Context, param string) (uint, error) {
 	idParam := c.Param(param)
 	id, err := strconv.ParseUint(idParam, 10, 32)
 	return uint(id), err
 }
 
-// GenerateSlug generates a URL-friendly slug from a string
+// ParseUUIDParam returns a UUID URL parameter as a string.
+func ParseUUIDParam(c *gin.Context, param string) string {
+	return c.Param(param)
+}
+
+// GenerateSlug converts a string into a URL-friendly slug.
+// It lowercases, removes special characters, and collapses whitespace/hyphens.
 func GenerateSlug(name string) string {
-	return strings.ToLower(strings.ReplaceAll(name, " ", "-"))
+	lower := strings.ToLower(name)
+	clean := nonAlphanumericRegex.ReplaceAllString(lower, "")
+	slug := multiSpaceRegex.ReplaceAllString(clean, "-")
+	return strings.Trim(slug, "-")
+}
+
+// Ptr returns a pointer to the given value. Useful for optional struct fields.
+func Ptr[T any](v T) *T {
+	return &v
 }

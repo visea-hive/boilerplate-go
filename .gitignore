@@ -10,6 +10,7 @@
 
 # Output
 *.out
+tmp/build-errors.log
 
 # Go workspace
 go.work

@@ -31,21 +31,7 @@ func InitDB(cfg *DBConfig) {
 // InitMigration runs auto-migration for all registered models.
 func InitMigration() {
 	err := DB.AutoMigrate(
-		&model.Organization{},
-		&model.User{},
-		&model.Membership{},
-		&model.OTPChallenge{},
-		&model.PasswordResetToken{},
-		&model.EmailVerification{},
-		&model.Device{},
-		&model.Session{},
-		&model.RefreshToken{},
-		&model.Service{},
-		&model.Permission{},
-		&model.Role{},
-		&model.RolePermission{},
-		&model.UserRole{},
-		&model.LoginAttempt{},
+		&model.Product{},
 	)
 	if err != nil {
 		slog.Error("Failed to migrate database", "error", err)

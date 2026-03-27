@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/visea-hive/auth-core/internal/config"
+	"github.com/visea-hive/auth-core/internal/middleware"
 	"github.com/visea-hive/auth-core/internal/route"
 )
 
@@ -36,7 +37,7 @@ func main() {
 	config.InitDB(&cfg.DB)
 
 	// Initialize Redis
-	rdb, err := config.InitRedis(&cfg.Redis)
+	_, err := config.InitRedis(&cfg.Redis)
 	if err != nil {
 		slog.Error("Failed to connect to Redis", "error", err)
 		os.Exit(1)
@@ -55,19 +56,13 @@ func main() {
 
 	// Setup Gin router with explicit middleware
 	router := gin.New()
-	router.Use(gin.Logger(), gin.Recovery())
-
-	// Initialize JWT Manager
-	jwtManager := config.InitJWT(&cfg.JWT)
-
-	// Initialize Hasher
-	hasher := config.InitHasher(&cfg.Hash)
+	router.Use(gin.Logger(), gin.Recovery(), middleware.Lang())
 
 	// Initialize CORS
 	config.InitCORS(router, &cfg.CORS)
 
 	// Initialize Routes
-	route.InitRoutes(router, rdb, config.DB, jwtManager, hasher)
+	route.InitRoutes(router, config.DB)
 
 	// Start server
 	addr := fmt.Sprintf(":%s", cfg.App.Port)

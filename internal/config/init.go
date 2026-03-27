@@ -11,8 +11,6 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
-	"github.com/visea-hive/auth-core/pkg/crypto"
-	jwtpkg "github.com/visea-hive/auth-core/pkg/jwt"
 	"github.com/visea-hive/auth-core/pkg/logger"
 	"github.com/visea-hive/auth-core/pkg/notifier"
 )
@@ -78,25 +76,6 @@ func InitNotifier(cfg *NotificationConfig) *logger.Logger {
 	log := logger.New(notifier.NewAsync(n))
 	logger.SetDefault(log)
 	return log
-}
-
-// InitHasher creates a Hasher using the secret pepper from config.
-// Logs a warning if HASH_SECRET is empty (only acceptable in local dev).
-func InitHasher(cfg *HashConfig) *crypto.Hasher {
-	if cfg.Secret == "" {
-		slog.Warn("HASH_SECRET is not set — password hashing has no pepper (unsafe in production)")
-	}
-	return crypto.New(cfg.Secret)
-}
-
-// InitJWT creates a JWT Manager using the secret and TTL from config.
-// Logs a warning if JWT_SECRET is empty (unsafe in production).
-func InitJWT(cfg *JWTConfig) *jwtpkg.Manager {
-	if cfg.Secret == "" {
-		slog.Warn("JWT_SECRET is not set — tokens are unsigned (unsafe in production)")
-	}
-	ttl := time.Duration(cfg.AccessTTLMins) * time.Minute
-	return jwtpkg.New(cfg.Secret, ttl)
 }
 
 // InitRedis creates and validates a Redis client connection.

@@ -2,7 +2,7 @@ package messages
 
 // --- Success Messages ---
 
-// Use these predefined success types for standard operations
+// Use these predefined success types for standard CRUD operations.
 var (
 	SuccessCreate = newSuccess("create", "%s berhasil disimpan", "%s successfully saved")
 	SuccessUpdate = newSuccess("update", "%s berhasil diperbarui", "%s successfully updated")
@@ -22,10 +22,6 @@ var (
 )
 
 var (
-	// Organization Errors
-	ErrOrganizationNotFound   = NewError("organization tidak ditemukan", "Organization not found")
-	ErrOrganizationNameExists = NewError("nama organization sudah digunakan", "Organization name already exists")
-
 	// Standard CRUD Errors
 	ErrGeneralCreated         = NewError("data gagal dibuat", "Failed to create data")
 	ErrGeneralUpdated         = NewError("data gagal diperbarui", "Failed to update data")
@@ -39,29 +35,4 @@ var (
 	// Datatable Errors
 	ErrSortColumn = NewError("kolom pengurutan tidak valid", "Invalid sort column")
 	ErrSortOrder  = NewError("urutan pengurutan tidak valid", "Invalid sort order")
-)
-
-var (
-	// JWT / Auth Token Errors
-	ErrTokenInvalid          = NewError("token tidak valid", "Token is invalid")
-	ErrTokenExpired          = NewError("token sudah kadaluarsa", "Token has expired")
-	ErrTokenUnexpectedMethod = NewError("metode penandatanganan token tidak didukung", "Unexpected token signing method")
-)
-
-var (
-	// Crypto / Hashing Errors
-	ErrHashInvalidFormat       = NewError("format hash tidak valid", "Encoded hash is not in the correct format")
-	ErrHashIncompatibleVersion = NewError("versi argon2 tidak kompatibel", "Incompatible argon2 version")
-)
-
-var (
-	// Password Validation Errors
-	ErrPasswordTooWeak    = NewError("password terlalu lemah", "Password is too weak")
-	ErrRegisterValidation = NewError("password lemah atau email tidak valid", "weak password or invalid email")
-)
-
-var (
-	// Auth Errors
-	ErrEmailAlreadyExists = NewError("email sudah digunakan", "Email already in use")
-	ErrTooManyRequests    = NewError("terlalu banyak permintaan", "Too many requests. Please try again later.")
 )

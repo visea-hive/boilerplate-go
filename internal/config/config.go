@@ -11,8 +11,6 @@ type Config struct {
 	DB           DBConfig
 	CORS         CORSConfig
 	Notification NotificationConfig
-	Hash         HashConfig
-	JWT          JWTConfig
 	Redis        RedisConfig
 }
 
@@ -28,17 +26,6 @@ type NotificationConfig struct {
 	Enabled    bool
 	Provider   string // "slack", "mattermost", etc.
 	WebhookURL string
-}
-
-// HashConfig holds password hashing settings.
-type HashConfig struct {
-	Secret string // HASH_SECRET env var — used as argon2id pepper
-}
-
-// JWTConfig holds JWT signing settings.
-type JWTConfig struct {
-	Secret        string // JWT_SECRET env var
-	AccessTTLMins int    // JWT_ACCESS_TTL_MINUTES (default: 15)
 }
 
 // CORSConfig holds CORS settings.
@@ -88,13 +75,6 @@ func Load() *Config {
 			Enabled:    getEnv("NOTIFICATION_ENABLED", "false") == "true",
 			Provider:   getEnv("NOTIFICATION_PROVIDER", "slack"),
 			WebhookURL: getEnv("NOTIFICATION_WEBHOOK_URL", ""),
-		},
-		Hash: HashConfig{
-			Secret: getEnv("HASH_SECRET", ""),
-		},
-		JWT: JWTConfig{
-			Secret:        getEnv("JWT_SECRET", ""),
-			AccessTTLMins: getEnvInt("JWT_ACCESS_TTL_MINUTES", 15),
 		},
 		Redis: RedisConfig{
 			Host:     getEnv("REDIS_HOST", "localhost"),

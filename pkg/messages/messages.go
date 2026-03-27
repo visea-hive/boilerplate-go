@@ -50,12 +50,10 @@ func NewError(idMsg, enMsg string) error {
 
 // --- Dynamic Title Helper ---
 
-// FormatTitle returns the provided title if it's not empty, otherwise defaults to "data".
+// FormatTitle returns the provided title if it's not empty, otherwise returns
+// a locale-appropriate fallback ("data" in both supported languages for now).
 func FormatTitle(lang, title string) string {
 	if strings.TrimSpace(title) == "" {
-		if lang == LangEN {
-			return "data"
-		}
 		return "data"
 	}
 	return title
